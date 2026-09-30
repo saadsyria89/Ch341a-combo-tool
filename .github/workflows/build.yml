@@ -21,14 +21,10 @@ jobs:
 
     - name: Create Base Project Structure
       run: |
-        # إنشاء المجلدات الأساسية لمشروع أندرويد مصغر
         mkdir -p app/src/main/java/com/saad/ch341tool
         mkdir -p app/src/main/res/layout
-
-        # 1. إنشاء ملف settings.gradle
         echo "include ':app'" > settings.gradle
 
-        # 2. إنشاء ملف build.gradle الرئيسي للمشروع
         cat << 'EOF' > build.gradle
         buildscript {
             repositories { google(); mavenCentral() }
@@ -39,7 +35,6 @@ jobs:
         }
         EOF
 
-        # 3. إنشاء ملف build.gradle الخاص بمجلد التطبيق (app)
         cat << 'EOF' > app/build.gradle
         plugins { id 'com.android.application' }
         android {
@@ -58,7 +53,6 @@ jobs:
         }
         EOF
 
-        # 4. إنشاء ملف الأذونات والـ Manifest المجهز باسمك
         cat << 'EOF' > app/src/main/AndroidManifest.xml
         <?xml version="1.0" encoding="utf-8"?>
         <manifest xmlns:android="http://android.com" package="com.saad.ch341tool">
@@ -75,7 +69,6 @@ jobs:
         </manifest>
         EOF
 
-        # 5. إنشاء واجهة الأزرار activity_main.xml
         cat << 'EOF' > app/src/main/res/layout/activity_main.xml
         <?xml version="1.0" encoding="utf-8"?>
         <LinearLayout xmlns:android="http://android.com" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal" android:padding="24dp" android:background="#F5F5F5">
@@ -91,7 +84,6 @@ jobs:
         </LinearLayout>
         EOF
 
-        # 6. إنشاء كود الجافا الأساسي MainActivity.java
         cat << 'EOF' > app/src/main/java/com/saad/ch341tool/MainActivity.java
         package com.saad.ch341tool;
         import android.app.Activity;
@@ -164,7 +156,7 @@ jobs:
                     if (isConnected && connection != null) {
                         byte[] cmd = new byte[]{0x03, 0x00, 0x00, 0x00};
                         connection.bulkTransfer(endpointOut, cmd, cmd.length, 1000);
-                        byte[] buffer = new byte[1024];
+                        byte[] buffer = new byte;
                         connection.bulkTransfer(endpointIn, buffer, buffer.length, 2000);
                         Toast.makeText(this, "سعد العكاري: تمت القراءة بنجاح!", Toast.LENGTH_SHORT).show();
                     }
@@ -180,3 +172,8 @@ jobs:
                     }
                 });
 
+                btnWrite.setOnClickListener(v -> {
+                    if (isConnected && connection != null) {
+                        byte[] writeEnable = new byte[]{0x06};
+                        connection.bulkTransfer(endpointOut, writeEnable, writeEnable.length, 500);
+                        byte[] cmd = new byte[]{0x02, 0x00, 0x00, 0x00};
