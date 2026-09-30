@@ -1,4 +1,3 @@
-
 name: Build Saad Combo Tool
 
 on:
@@ -83,7 +82,7 @@ jobs:
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="سعد العكاري - Combo Tool" android:textSize="24sp" android:textStyle="bold" android:textColor="#1E88E5" android:layout_marginTop="20dp"/>
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="أداة تشغيل مبرمجة CH341A للفلاشات 24cxx / 25cxx" android:textSize="12sp" android:textColor="#757575" android:layout_marginBottom="30dp"/>
             <TextView android:id="@+id/statusText" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="الحالة: المبرمجة غير متصلة 🔌" android:textSize="16sp" android:gravity="center" android:padding="16dp" android:background="#FFFFEBEE" android:textColor="#C62828" android:layout_marginBottom="24dp"/>
-            <Button android:id="@+id/btnConnect" android:layout_width="match_parent" android:height="50dp" android:text="الاتصال بالمبرمجة وفحص الشريحة" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF" android:layout_marginBottom="20dp"/>
+            <Button android:id="@+id/btnConnect" android:layout_width="match_parent" android:layout_height="50dp" android:text="الاتصال بالمبرمجة وفحص الشريحة" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF" android:layout_marginBottom="20dp"/>
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="16dp">
                 <Button android:id="@+id/btnRead" android:layout_width="0dp" android:layout_height="50dp" android:layout_weight="1" android:text="قراءة Read" android:backgroundTint="#4CAF50" android:textColor="#FFFFFF" android:layout_marginEnd="8dp"/>
                 <Button android:id="@+id/btnErase" android:layout_width="0dp" android:layout_height="50dp" android:layout_weight="1" android:text="مسح Erase" android:backgroundTint="#F44336" android:textColor="#FFFFFF" android:layout_marginStart="8dp"/>
@@ -165,7 +164,7 @@ jobs:
                     if (isConnected && connection != null) {
                         byte[] cmd = new byte[]{0x03, 0x00, 0x00, 0x00};
                         connection.bulkTransfer(endpointOut, cmd, cmd.length, 1000);
-                        byte[] buffer = new byte[1024];
+                        byte[] buffer = new byte;
                         connection.bulkTransfer(endpointIn, buffer, buffer.length, 2000);
                         Toast.makeText(this, "سعد العكاري: تمت القراءة بنجاح!", Toast.LENGTH_SHORT).show();
                     }
@@ -180,5 +179,4 @@ jobs:
                         Toast.makeText(this, "تم مسح الشريحة!", Toast.LENGTH_SHORT).show();
                     }
                 });
-
 
