@@ -17,15 +17,15 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-
-    - name: Initialize Project Structure
+    - name: Initialize Android Project
       run: |
+        # إنشاء هيكلية المجلدات بالكامل
         mkdir -p app/src/main/java/com/saad/ch341tool
         mkdir -p app/src/main/res/layout
+
+        # توليد ملفات Gradle Wrapper الأساسية لتفادي أخطاء السيرفر
+        gradle wrapper --gradle-version 8.2
 
         # إنشاء ملف build.gradle الرئيسي للمشروع
         cat << 'EOF' > build.gradle
@@ -43,9 +43,7 @@ jobs:
 
         # إنشاء ملف build.gradle الخاص بالتطبيق
         cat << 'EOF' > app/build.gradle
-        plugins {
-            id 'com.android.application'
-        }
+        plugins { id 'com.android.application' }
         android {
             namespace "com.saad.ch341tool"
             compileSdk 34
@@ -64,18 +62,13 @@ jobs:
 
     - name: Create Manifest and Resources
       run: |
-        # إنشاء ملف AndroidManifest.xml بقيم الأذونات واسم سعد العكاري
+        # إنشاء ملف AndroidManifest.xml
         cat << 'EOF' > app/src/main/AndroidManifest.xml
         <?xml version="1.0" encoding="utf-8"?>
-        <manifest xmlns:android="http://android.com"
-            package="com.saad.ch341tool">
+        <manifest xmlns:android="http://android.com" package="com.saad.ch341tool">
             <uses-feature android:name="android.hardware.usb.host" />
             <uses-permission android:name="android.permission.USB_PERMISSION" />
-            <application
-                android:allowBackup="true"
-                android:label="سعد العكاري - Combo Tool"
-                android:supportsRtl="true"
-                android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar">
+            <application android:allowBackup="true" android:label="سعد العكاري - Combo Tool" android:supportsRtl="true" android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar">
                 <activity android:name=".MainActivity" android:exported="true">
                     <intent-filter>
                         <action android:name="android.intent.action.MAIN" />
@@ -86,87 +79,25 @@ jobs:
         </manifest>
         EOF
 
-        # إنشاء ملف الواجهة الرسومية بالأزرار والألوان
+        # إنشاء ملف الواجهة الرسومية activity_main.xml
         cat << 'EOF' > app/src/main/res/layout/activity_main.xml
         <?xml version="1.0" encoding="utf-8"?>
-        <LinearLayout xmlns:android="http://android.com"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:padding="24dp"
-            android:background="#F5F5F5">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="سعد العكاري - Combo Tool"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="#1E88E5"
-                android:layout_marginTop="20dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="أداة تشغيل مبرمجة CH341A للفلاشات 24cxx / 25cxx"
-                android:textSize="12sp"
-                android:textColor="#757575"
-                android:layout_bottom="30dp"/>
-            <TextView
-                android:id="@+id/statusText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="الحالة: المبرمجة غير متصلة 🔌"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:padding="16dp"
-                android:background="#FFFFEBEE"
-                android:textColor="#C62828"
-                android:layout_marginBottom="24dp"/>
-            <Button
-                android:id="@+id/btnConnect"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="الاتصال بالمبرمجة وفحص الشريحة"
-                android:backgroundTint="#1E88E5"
-                android:textColor="#FFFFFF"
-                android:layout_marginBottom="20dp"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
-                <Button
-                    android:id="@+id/btnRead"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:text="قراءة Read"
-                    android:backgroundTint="#4CAF50"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginEnd="8dp"/>
-                <Button
-                    android:id="@+id/btnErase"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:text="مسح Erase"
-                    android:backgroundTint="#F44336"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginStart="8dp"/>
+        <LinearLayout xmlns:android="http://android.com" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal" android:padding="24dp" android:background="#F5F5F5">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="سعد العكاري - Combo Tool" android:textSize="24sp" android:textStyle="bold" android:textColor="#1E88E5" android:layout_marginTop="20dp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="أداة تشغيل مبرمجة CH341A للفلاشات 24cxx / 25cxx" android:textSize="12sp" android:textColor="#757575" android:layout_marginBottom="30dp"/>
+            <TextView android:id="@+id/statusText" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="الحالة: المبرمجة غير متصلة 🔌" android:textSize="16sp" android:gravity="center" android:padding="16dp" android:background="#FFFFEBEE" android:textColor="#C62828" android:layout_marginBottom="24dp"/>
+            <Button android:id="@+id/btnConnect" android:layout_width="match_parent" android:layout_height="50dp" android:text="الاتصال بالمبرمجة وفحص الشريحة" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF" android:layout_marginBottom="20dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="16dp">
+                <Button android:id="@+id/btnRead" android:layout_width="0dp" android:layout_height="50dp" android:layout_weight="1" android:text="قراءة Read" android:backgroundTint="#4CAF50" android:textColor="#FFFFFF" android:layout_marginEnd="8dp"/>
+                <Button android:id="@+id/btnErase" android:layout_width="0dp" android:layout_height="50dp" android:layout_weight="1" android:text="مسح Erase" android:backgroundTint="#F44336" android:textColor="#FFFFFF" android:layout_marginStart="8dp"/>
             </LinearLayout>
-            <Button
-                android:id="@+id/btnWrite"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="كتابة Write"
-                android:backgroundTint="#FF9800"
-                android:textColor="#FFFFFF"/>
+            <Button android:id="@+id/btnWrite" android:layout_width="match_parent" android:layout_height="50dp" android:text="كتابة Write" android:backgroundTint="#FF9800" android:textColor="#FFFFFF"/>
         </LinearLayout>
         EOF
 
     - name: Create Source Code
       run: |
-        # إنشاء كود الجافا الرئيسي المشغل للمبرمجة وفحص الذواكر
+        # إنشاء كود الجافا المشغل للمبرمجة والذواكر
         cat << 'EOF' > app/src/main/java/com/saad/ch341tool/MainActivity.java
         package com.saad.ch341tool;
         import android.app.Activity;
@@ -231,3 +162,23 @@ jobs:
                         }
                     } else {
                         statusText.setText("الحالة: المبرمجة غير متصلة 🔌");
+                        isConnected = false;
+                    }
+                });
+
+                btnRead.setOnClickListener(v -> {
+                    if (isConnected && connection != null) {
+                        byte[] cmd = new byte[]{0x03, 0x00, 0x00, 0x00};
+                        connection.bulkTransfer(endpointOut, cmd, cmd.length, 1000);
+                        byte[] buffer = new byte[1024];
+                        connection.bulkTransfer(endpointIn, buffer, buffer.length, 2000);
+                        Toast.makeText(this, "سعد العكاري: تمت القراءة بنجاح!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                btnErase.setOnClickListener(v -> {
+                    if (isConnected && connection != null) {
+                        byte[] writeEnable = new byte[]{0x06};
+                        connection.bulkTransfer(endpointOut, writeEnable, writeEnable.length, 500);
+                        byte[] bulkErase = new byte[]{(byte) 0xC7};
+                        connection.bulkTransfer(endpointOut, bulkErase, bulkErase.length, 2000);
