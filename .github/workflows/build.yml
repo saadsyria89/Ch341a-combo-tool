@@ -164,7 +164,7 @@ jobs:
                     if (isConnected && connection != null) {
                         byte[] cmd = new byte[]{0x03, 0x00, 0x00, 0x00};
                         connection.bulkTransfer(endpointOut, cmd, cmd.length, 1000);
-                        byte[] buffer = new byte;
+                        byte[] buffer = new byte[1024];
                         connection.bulkTransfer(endpointIn, buffer, buffer.length, 2000);
                         Toast.makeText(this, "سعد العكاري: تمت القراءة بنجاح!", Toast.LENGTH_SHORT).show();
                     }
