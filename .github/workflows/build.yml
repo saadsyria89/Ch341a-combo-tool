@@ -21,14 +21,14 @@ jobs:
 
     - name: Create Base Project Structure
       run: |
-        # إنشاء المجلدات الأساسية لمشروع أندرويد مصغر
+        # إنشاء المجلدات الهيكلية للمشروع
         mkdir -p app/src/main/java/com/saad/ch341tool
         mkdir -p app/src/main/res/layout
 
         # 1. إنشاء ملف settings.gradle
         echo "include ':app'" > settings.gradle
 
-        # 2. إنشاء ملف build.gradle الرئيسي للمشروع
+        # 2. إنشاء ملف build.gradle الرئيسي
         cat << 'EOF' > build.gradle
         buildscript {
             repositories { google(); mavenCentral() }
@@ -39,7 +39,7 @@ jobs:
         }
         EOF
 
-        # 3. إنشاء ملف build.gradle الخاص بمجلد التطبيق (app)
+        # 3. إنشاء ملف build.gradle الخاص بالتطبيق
         cat << 'EOF' > app/build.gradle
         plugins { id 'com.android.application' }
         android {
@@ -58,7 +58,7 @@ jobs:
         }
         EOF
 
-        # 4. إنشاء ملف الأذونات والـ Manifest المجهز باسمك
+        # 4. إنشاء ملف AndroidManifest.xml باسمك والأذونات
         cat << 'EOF' > app/src/main/AndroidManifest.xml
         <?xml version="1.0" encoding="utf-8"?>
         <manifest xmlns:android="http://android.com" package="com.saad.ch341tool">
@@ -75,7 +75,7 @@ jobs:
         </manifest>
         EOF
 
-        # 5. إنشاء واجهة الأزرار activity_main.xml
+        # 5. إنشاء واجهة الأزرار الرسومية للتطبيق
         cat << 'EOF' > app/src/main/res/layout/activity_main.xml
         <?xml version="1.0" encoding="utf-8"?>
         <LinearLayout xmlns:android="http://android.com" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal" android:padding="24dp" android:background="#F5F5F5">
@@ -91,7 +91,7 @@ jobs:
         </LinearLayout>
         EOF
 
-        # 6. إنشاء كود الجافا الأساسي MainActivity.java
+        # 6. إنشاء كود الجافا المشغل للمبرمجة والذواكر
         cat << 'EOF' > app/src/main/java/com/saad/ch341tool/MainActivity.java
         package com.saad.ch341tool;
         import android.app.Activity;
@@ -180,3 +180,4 @@ jobs:
                     }
                 });
 
+                btnWrite.setOnClickListener(v -> {
